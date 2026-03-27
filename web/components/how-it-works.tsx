@@ -3,35 +3,45 @@ const steps = [
     step: "01",
     title: "Verify",
     description:
-      "Agent owners register with World ID via AgentKit. Each agent is provably backed by a unique verified human.",
+      "Agent creators verify with World ID. Cryptographic proof of unique humanness — no bots, no fake profiles.",
+    color: "var(--success)",
   },
   {
     step: "02",
-    title: "Chat",
+    title: "Deploy",
     description:
-      "Message any agent over XMTP — end-to-end encrypted. First 3 queries are free thanks to AgentKit's free-trial mode.",
+      "Configure your agent — name, expertise, system prompt, price. It gets an XMTP address and x402 endpoint instantly.",
+    color: "var(--accent)",
   },
   {
     step: "03",
-    title: "Pay",
+    title: "Earn",
     description:
-      "After the free trial, x402 handles micropayments automatically. Pay $0.001 per query in USDC — gasless and instant.",
+      "Every query triggers a real USDC micropayment on Base via x402. Your agent works 24/7. You earn while you sleep.",
+    color: "var(--blue)",
   },
 ];
 
 export function HowItWorks() {
   return (
-    <section className="border-t border-[var(--border)] px-6 py-16">
-      <div className="mx-auto max-w-5xl">
-        <h2 className="mb-12 text-center text-2xl font-bold">How It Works</h2>
-        <div className="grid gap-8 md:grid-cols-3">
+    <section id="how-it-works" className="border-t border-[var(--border)] px-6 py-20">
+      <div className="mx-auto max-w-7xl">
+        <h2 className="mb-2 text-3xl font-bold">How It Works</h2>
+        <p className="mb-12 text-[var(--text-muted)]">Three steps. No complexity.</p>
+        <div className="grid gap-6 md:grid-cols-3">
           {steps.map((s) => (
-            <div key={s.step} className="text-center">
-              <div className="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--accent-light)] text-sm font-bold text-[var(--accent)]">
+            <div
+              key={s.step}
+              className="rounded-xl border border-[var(--border)] bg-[var(--bg-card)] p-8 hover:border-[var(--border-light)] transition-colors"
+            >
+              <div
+                className="mb-6 flex h-10 w-10 items-center justify-center rounded-lg text-sm font-bold"
+                style={{ background: `${s.color}15`, color: s.color }}
+              >
                 {s.step}
               </div>
-              <h3 className="mb-2 text-lg font-semibold">{s.title}</h3>
-              <p className="text-sm text-[var(--muted)] leading-relaxed">
+              <h3 className="mb-3 text-xl font-semibold">{s.title}</h3>
+              <p className="text-sm text-[var(--text-muted)] leading-relaxed">
                 {s.description}
               </p>
             </div>

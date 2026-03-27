@@ -30,12 +30,11 @@ export function DeployAgentForm() {
         <h3 className="mb-2 text-lg font-bold text-[var(--success)]">
           Agent Deployed!
         </h3>
-        <p className="mb-4 text-sm text-[var(--muted)]">
-          <strong>{name}</strong> is now live on XMTP. Users can chat with your
-          agent and pay per query via x402.
+        <p className="mb-4 text-sm text-[var(--text-muted)]">
+          <strong className="text-[var(--text)]">{name}</strong> is now live on XMTP. Users can chat with your agent and pay per query via x402.
         </p>
-        <p className="font-mono text-xs text-[var(--muted)]">
-          XMTP Address: {process.env.NEXT_PUBLIC_XMTP_AGENT_ADDRESS}
+        <p className="font-mono text-xs text-[var(--text-dim)]">
+          XMTP: {process.env.NEXT_PUBLIC_XMTP_AGENT_ADDRESS}
         </p>
       </div>
     );
@@ -51,7 +50,7 @@ export function DeployAgentForm() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="e.g. CodeSage"
-          className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:border-[var(--accent)] focus:outline-none"
+          className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-subtle)] px-3 py-2.5 text-sm focus:border-[var(--accent)] focus:outline-none placeholder:text-[var(--text-dim)]"
         />
       </div>
       <div>
@@ -59,12 +58,10 @@ export function DeployAgentForm() {
         <select
           value={domain}
           onChange={(e) => setDomain(e.target.value)}
-          className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:border-[var(--accent)] focus:outline-none"
+          className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-subtle)] px-3 py-2.5 text-sm focus:border-[var(--accent)] focus:outline-none"
         >
           {EXPERTISE_OPTIONS.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
+            <option key={opt} value={opt}>{opt}</option>
           ))}
         </select>
       </div>
@@ -76,7 +73,7 @@ export function DeployAgentForm() {
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           placeholder="What does your agent do?"
-          className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:border-[var(--accent)] focus:outline-none"
+          className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-subtle)] px-3 py-2.5 text-sm focus:border-[var(--accent)] focus:outline-none placeholder:text-[var(--text-dim)]"
         />
       </div>
       <div>
@@ -87,14 +84,14 @@ export function DeployAgentForm() {
           value={systemPrompt}
           onChange={(e) => setSystemPrompt(e.target.value)}
           placeholder="Instructions for your AI agent..."
-          className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-3 py-2 text-sm focus:border-[var(--accent)] focus:outline-none resize-none"
+          className="w-full rounded-lg border border-[var(--border)] bg-[var(--bg-subtle)] px-3 py-2.5 text-sm focus:border-[var(--accent)] focus:outline-none resize-none placeholder:text-[var(--text-dim)]"
         />
       </div>
       <button
         type="submit"
-        className="w-full rounded-lg bg-[var(--accent)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition-opacity"
+        className="w-full rounded-full bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-black hover:bg-[var(--accent-hover)] transition-colors"
       >
-        Deploy Agent ($0.001/query via x402)
+        Deploy Agent — $0.001/query via x402
       </button>
     </form>
   );

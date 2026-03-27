@@ -30,9 +30,9 @@ export function ConnectWallet({ onConnected }: ConnectWalletProps) {
 
   if (address) {
     return (
-      <div className="flex items-center gap-2 rounded-lg border border-[var(--border)] px-4 py-2 text-sm">
+      <div className="flex items-center gap-2 rounded-full border border-[var(--border)] px-4 py-2 text-sm">
         <span className="h-2 w-2 rounded-full bg-[var(--success)]" />
-        <span className="font-mono text-xs">{address.slice(0, 6)}...{address.slice(-4)}</span>
+        <span className="font-mono text-xs text-[var(--text-muted)]">{address.slice(0, 6)}...{address.slice(-4)}</span>
       </div>
     );
   }
@@ -41,7 +41,7 @@ export function ConnectWallet({ onConnected }: ConnectWalletProps) {
     <button
       onClick={connect}
       disabled={connecting}
-      className="rounded-lg border border-[var(--border)] px-6 py-3 text-sm font-medium hover:bg-[var(--bg-subtle)] transition-colors"
+      className="rounded-full border border-[var(--border)] px-6 py-3 text-sm font-medium hover:border-[var(--border-light)] transition-colors"
     >
       {connecting ? "Connecting..." : "Connect Wallet"}
     </button>
