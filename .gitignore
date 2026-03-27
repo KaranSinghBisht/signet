@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env
+.env.local
+.env.production
+*.db3
+*.db3-shm
+*.db3-wal
+*.db3.sqlcipher_salt
+xmtp-data/
+.next/
+out/
+.vercel/
+.turbo/
+*.tsbuildinfo
+.DS_Store

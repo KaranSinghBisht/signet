@@ -1,0 +1,21 @@
+{
+  "name": "signet",
+  "private": true,
+  "description": "Verified human agents, 24/7. World ID + x402 + XMTP.",
+  "scripts": {
+    "dev:server": "pnpm --filter server dev",
+    "dev:agent": "pnpm --filter agent dev",
+    "dev:web": "pnpm --filter web dev",
+    "build": "pnpm --filter shared build && pnpm --filter server build && pnpm --filter web build",
+    "dev": "concurrently \"pnpm dev:server\" \"pnpm dev:agent\"",
+    "postinstall": "bash scripts/patch-bindings.sh 2>/dev/null || true"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@9.15.0"
+}
