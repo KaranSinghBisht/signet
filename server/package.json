@@ -1,0 +1,29 @@
+{
+  "name": "@signet/server",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@signet/shared": "workspace:*",
+    "@worldcoin/agentkit": "^0.1.5",
+    "@x402/hono": "^2.8.0",
+    "@x402/evm": "latest",
+    "@x402/core": "latest",
+    "hono": "^4",
+    "@hono/node-server": "^1",
+    "groq-sdk": "^0.9.0",
+    "@google/generative-ai": "^0.24.0",
+    "viem": "^2",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "@types/node": "^22"
+  }
+}
