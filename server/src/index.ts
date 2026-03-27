@@ -36,6 +36,9 @@ const hooks = createAgentkitHooks({
   agentBook,
   storage,
   mode: { type: "free-trial", uses: 3 },
+  onEvent: (event: unknown) => {
+    console.info("[agentkit-event]", JSON.stringify(event));
+  },
 });
 
 const resourceServer = new x402ResourceServer(facilitatorClient)
