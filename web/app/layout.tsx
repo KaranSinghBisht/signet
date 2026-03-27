@@ -1,14 +1,15 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { CursorGlow } from "@/components/cursor-glow";
 
 export const metadata: Metadata = {
   title: "Signet — Verified Human Agents",
   description:
-    "A marketplace where World ID-verified humans deploy AI agents as 24/7 paid representatives. Chat via XMTP. Pay via x402.",
+    "Deploy World ID-verified AI agents that earn via x402 micropayments, all over XMTP.",
   openGraph: {
     title: "Signet — Verified Human Agents",
     description:
-      "World ID verified agents you can chat with and pay per query.",
+      "Deploy World ID-verified AI agents that earn via x402 micropayments.",
   },
 };
 
@@ -19,7 +20,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        <CursorGlow />
+        {children}
+      </body>
     </html>
   );
 }

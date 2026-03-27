@@ -1,22 +1,29 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
 :root {
-  --bg: #0a0a0a;
-  --bg-subtle: #111111;
-  --bg-card: #141414;
-  --text: #f5f5f5;
-  --text-muted: #71717a;
-  --text-dim: #3f3f46;
-  --border: #27272a;
-  --border-light: #3f3f46;
-  --accent: #f97316;
-  --accent-hover: #ea580c;
-  --accent-light: rgba(249, 115, 22, 0.1);
-  --success: #22c55e;
-  --success-light: rgba(34, 197, 94, 0.1);
-  --blue: #3b82f6;
-  --purple: #a855f7;
-  --pink: #ec4899;
+  --bg: #fafaf8;
+  --bg-subtle: #f2f0ec;
+  --bg-card: #ffffff;
+  --bg-paper: #fdfcfa;
+  --text: #1a1a1a;
+  --text-muted: #6b6b6b;
+  --text-dim: #a3a3a3;
+  --border: #e5e2dc;
+  --border-light: #d4d0c8;
+  --accent: #6d28d9;
+  --accent-hover: #5b21b6;
+  --accent-light: rgba(109, 40, 217, 0.08);
+  --success: #16a34a;
+  --success-light: rgba(22, 163, 74, 0.08);
+  --blue: #2563eb;
+  --purple: #7c3aed;
+  --pink: #db2777;
+  --cyan: #0891b2;
+
+  --font-heading: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 }
 
 * {
@@ -24,13 +31,61 @@
 }
 
 body {
-  background: var(--bg);
+  background: var(--bg-paper);
   color: var(--text);
-  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+}
+
+code, .font-mono {
+  font-family: var(--font-mono);
 }
 
 ::selection {
   background: var(--accent);
-  color: #000;
+  color: #fff;
+}
+
+/* Paper grain texture */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* Cursor glow — softer for light theme */
+#cursor-glow {
+  position: fixed;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(circle, rgba(109, 40, 217, 0.04) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+}
+
+#cursor-dot {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+}
+
+a, button, input, textarea, select, [role="button"] {
+  cursor: pointer;
 }

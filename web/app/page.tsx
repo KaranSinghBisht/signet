@@ -27,7 +27,7 @@ export default function Home() {
   return (
     <main className="min-h-screen">
       <Navbar />
-      <Hero onVerified={() => setVerified(true)} />
+      <Hero />
 
       {/* App Section: Chat */}
       <section id="chat" className="border-t border-[var(--border)] px-6 py-20">
