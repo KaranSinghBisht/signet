@@ -3,6 +3,7 @@ dist/
 .env
 .env.local
 .env.production
+web/.env.local
 *.db3
 *.db3-shm
 *.db3-wal
