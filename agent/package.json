@@ -1,0 +1,25 @@
+{
+  "name": "@signet/agent",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "gen:keys": "tsx src/gen-keys.ts"
+  },
+  "dependencies": {
+    "@signet/shared": "workspace:*",
+    "@xmtp/agent-sdk": "latest",
+    "@x402/fetch": "latest",
+    "@x402/evm": "latest",
+    "viem": "^2",
+    "dotenv": "^16.4.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "@types/node": "^22"
+  }
+}
