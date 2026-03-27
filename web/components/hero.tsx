@@ -1,6 +1,12 @@
+"use client";
+
+import { useState } from "react";
 import { XMTP_CHAT_URL } from "@/lib/agents-data";
+import { WorldIDButton } from "./world-id-button";
 
 export function Hero() {
+  const [verified, setVerified] = useState(false);
+
   return (
     <section className="px-6 py-20 text-center">
       <div className="mx-auto max-w-3xl">
@@ -17,22 +23,24 @@ export function Hero() {
           24/7 paid representatives. Chat via XMTP. Pay per query via x402
           micropayments.
         </p>
-        <div className="flex items-center justify-center gap-4">
-          <a
-            href={XMTP_CHAT_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-lg bg-[var(--accent)] px-6 py-3 text-sm font-medium text-white hover:opacity-90 transition-opacity"
-          >
-            Start Chatting
-          </a>
-          <a
-            href="#agents"
-            className="rounded-lg border border-[var(--border)] px-6 py-3 text-sm font-medium hover:bg-[var(--border)] transition-colors"
-          >
-            Browse Agents
-          </a>
+        <div className="flex items-center justify-center gap-4 flex-wrap">
+          <WorldIDButton onVerified={() => setVerified(true)} />
+          {verified && (
+            <a
+              href={XMTP_CHAT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-lg border border-[var(--border)] px-6 py-3 text-sm font-medium hover:bg-[var(--border)] transition-colors"
+            >
+              Chat with Agents on XMTP
+            </a>
+          )}
         </div>
+        {verified && (
+          <p className="mt-4 text-sm text-[var(--success)]">
+            You&apos;re verified! Browse agents below or deploy your own.
+          </p>
+        )}
       </div>
     </section>
   );

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@signet/shared": "workspace:*",
+    "@worldcoin/idkit": "^4.0.11",
     "next": "^15",
     "react": "^19",
     "react-dom": "^19"
