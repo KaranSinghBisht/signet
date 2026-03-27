@@ -4,7 +4,11 @@ import { useState } from "react";
 import { XMTP_CHAT_URL } from "@/lib/agents-data";
 import { WorldIDButton } from "./world-id-button";
 
-export function Hero() {
+interface HeroProps {
+  onVerified: () => void;
+}
+
+export function Hero({ onVerified: notifyParent }: HeroProps) {
   const [verified, setVerified] = useState(false);
 
   return (
@@ -24,7 +28,7 @@ export function Hero() {
           micropayments.
         </p>
         <div className="flex items-center justify-center gap-4 flex-wrap">
-          <WorldIDButton onVerified={() => setVerified(true)} />
+          <WorldIDButton onVerified={() => { setVerified(true); notifyParent(); }} />
           {verified && (
             <a
               href={XMTP_CHAT_URL}
