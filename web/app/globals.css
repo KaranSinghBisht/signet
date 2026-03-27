@@ -75,16 +75,7 @@ body::before {
   transform: translate(-50%, -50%);
 }
 
-#cursor-dot {
-  position: fixed;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  pointer-events: none;
-  z-index: 10000;
-  transform: translate(-50%, -50%);
-}
+/* cursor dot removed */
 
 a, button, input, textarea, select, [role="button"] {
   cursor: pointer;

@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 
 export function CursorGlow() {
   const glowRef = useRef<HTMLDivElement>(null);
-  const dotRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -12,20 +11,11 @@ export function CursorGlow() {
         glowRef.current.style.left = `${e.clientX}px`;
         glowRef.current.style.top = `${e.clientY}px`;
       }
-      if (dotRef.current) {
-        dotRef.current.style.left = `${e.clientX}px`;
-        dotRef.current.style.top = `${e.clientY}px`;
-      }
     };
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  return (
-    <>
-      <div id="cursor-glow" ref={glowRef} />
-      <div id="cursor-dot" ref={dotRef} />
-    </>
-  );
+  return <div id="cursor-glow" ref={glowRef} />;
 }
