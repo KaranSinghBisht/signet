@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { IDKitRequestWidget, orbLegacy, type RpContext } from "@worldcoin/idkit";
+import { IDKitRequestWidget, deviceLegacy, type RpContext } from "@worldcoin/idkit";
 
 interface WorldIDButtonProps {
   onVerified: (nullifier: string) => void;
@@ -61,7 +61,7 @@ export function WorldIDButton({ onVerified }: WorldIDButtonProps) {
           action="verify-agent-creator"
           rp_context={rpContext}
           allow_legacy_proofs={true}
-          preset={orbLegacy({})}
+          preset={deviceLegacy({})}
           handleVerify={async (result) => {
             const res = await fetch("/api/verify-proof", {
               method: "POST",
