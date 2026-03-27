@@ -1,139 +1,107 @@
 # Signet — Verified Human Agents, 24/7
 
-A marketplace where World ID-verified humans deploy AI agents as their 24/7 paid representatives. Chat via XMTP. Pay via x402 micropayments.
+Deploy World ID-verified AI agents that earn via x402 micropayments, all over XMTP.
 
 ## Demo
 
-- **Web:** [signet.vercel.app](https://signet.vercel.app) (coming soon)
-- **Chat:** [xmtp.chat/dev/dm/0x4a8a42e4b8fe0665fd32ee98343b0fd4184cab9e](http://xmtp.chat/dev/dm/0x4a8a42e4b8fe0665fd32ee98343b0fd4184cab9e)
+- **Web:** [signet.vercel.app](https://signet.vercel.app)
+- **Chat:** [xmtp.chat/dev/dm/0x3d04a2384f512bd49408618b16210cfc1e648569](http://xmtp.chat/dev/dm/0x3d04a2384f512bd49408618b16210cfc1e648569)
+- **Payments:** [Base Sepolia Explorer — Receiver Wallet](https://sepolia.basescan.org/address/0x863bDa0bDdd0B4Ae2Cd737448c310D3e161C9798)
 
 ## Architecture
 
 ```
-User (World App / xmtp.chat)
-  │
-  ▼ XMTP message (/ask codesage How do I ...)
-  │
+Creator → Web (World ID verification via IDKit) → Deploy Agent Config
+
+User → XMTP message (/ask codesage ...)
+         ↓
 XMTP Agent (@xmtp/agent-sdk)
-  │ routes command, calls x402-protected API
-  ▼
-Hono API Server (x402 middleware + AgentKit)
-  │ verifies World ID → free trial or payment
-  │ x402: HTTP 402 → pay USDC → retry → 200
-  ▼
-AI Service (Groq / Gemini)
-  │ agent-specific system prompt
-  ▼
+         ↓ POST /query/:agentId (x402-protected)
+Hono Server
+  ├── x402 middleware → 402 → agent wallet pays USDC → facilitator settles on Base Sepolia
+  └── AgentKit middleware → verifies human-backed agent → free-trial or payment
+         ↓
+AI Service (Groq / Gemini) → agent-specific system prompt
+         ↓
 Response → XMTP Agent → User
 ```
 
 ```
 signet/
-├── packages/shared/    # Types + constants (agents, pricing, chain IDs)
+├── packages/shared/    # Types, agent configs, constants
 ├── server/             # Hono API — x402 payment wall + AgentKit verification
-├── agent/              # XMTP bot — streams messages, pays for queries, returns answers
-└── web/                # Next.js — agent directory + XMTP deep links
+├── agent/              # XMTP bot — message routing, x402 payment client
+└── web/                # Next.js — World ID verification, agent marketplace
+```
+
+## Why Each Tech is Load-Bearing
+
+| Tech | Role | Remove it and... |
+|------|------|-----------------|
+| **World ID** | Creator verification via IDKit. Proves every agent is backed by a real human. | Marketplace flooded with spam bots |
+| **x402** | Every query triggers a real USDC micropayment on Base Sepolia. Verifiable on-chain. | Agents can't afford to respond |
+| **XMTP** | ALL agent interactions happen over XMTP. Chat IS the product. | No way to talk to agents |
+
+## Verified On-Chain
+
+Each `/ask` query triggers a real x402 payment:
+- **Payer:** Agent wallet `0x3D04a2384f512bd49408618b16210cfc1e648569`
+- **Receiver:** `0x863bDa0bDdd0B4Ae2Cd737448c310D3e161C9798`
+- **Amount:** 1000 units ($0.001 USDC) per query
+- **Chain:** Base Sepolia (eip155:84532)
+- **Facilitator:** https://x402.org/facilitator
+
+## How It Works
+
+1. **Verify** — Agent creators verify with World ID (IDKit widget on web). Proves unique humanness.
+2. **Deploy** — Configure agent: name, expertise, system prompt, price. Agent gets an XMTP address.
+3. **Chat** — Users message agents via XMTP. Send `/ask <agent> <question>`.
+4. **Pay** — x402 handles micropayments automatically. $0.001 USDC per query, settled on Base.
+5. **Earn** — Agent creators earn USDC for every paid query.
+
+## XMTP Commands
+
+```
+/help               — Available commands
+/list               — Browse agents
+/ask <agent> <q>    — Query an agent
+```
+
+## Agents
+
+| Agent | Domain | Price/Query |
+|-------|--------|-------------|
+| CodeSage | Software Engineering | $0.001 |
+| LegalEagle | Legal Advisory | $0.001 |
+| FitCoach | Fitness & Nutrition | $0.001 |
+
+## Setup
+
+```bash
+git clone https://github.com/KaranSinghBisht/signet.git
+cd signet
+cp .env.example .env   # fill in API keys
+pnpm install
+
+# Generate XMTP keys (if needed)
+pnpm --filter agent gen:keys
+
+# Run
+pnpm dev:server        # Terminal 1: API server (port 3001)
+pnpm dev:agent         # Terminal 2: XMTP agent
+pnpm dev:web           # Terminal 3: Web frontend (port 3000)
 ```
 
 ## Tech Stack
 
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| Identity | **World AgentKit** | On-chain agent registration, World ID verification, free-trial mode |
-| Payments | **Coinbase x402** | HTTP 402 micropayments in USDC, gasless, instant |
-| Messaging | **XMTP** | E2E encrypted agent chat, reachable from World App |
-| Server | **Hono** | API framework with payment + verification middleware |
-| Frontend | **Next.js + Tailwind** | Agent directory with XMTP deep links |
-| AI | **Groq / Gemini** | Agent response generation |
-
-## How It Works
-
-1. **Verify** — Agent owners register with World ID via AgentKit CLI (`npx @worldcoin/agentkit-cli register <address>`). Each agent is provably backed by a unique verified human.
-2. **Browse** — Users visit the web directory to discover verified agents with different expertise and pricing.
-3. **Chat** — Users message agents over XMTP (via World App or xmtp.chat). First 3 queries are free (AgentKit free-trial mode).
-4. **Pay** — After the free trial, x402 handles micropayments automatically — $0.001 per query in USDC on Base Sepolia.
-5. **Earn** — Agent owners earn USDC for every paid query their agent answers.
-
-## Agents
-
-| Agent | Domain | Price |
-|-------|--------|-------|
-| **CodeSage** | Software Engineering | $0.001/query |
-| **LegalEagle** | Legal Advisory | $0.001/query |
-| **FitCoach** | Fitness & Nutrition | $0.001/query |
-
-## Commands (XMTP Chat)
-
-```
-/help               — Show available commands
-/list               — Browse available agents
-/ask <agent> <q>    — Query an agent (e.g., /ask codesage How do I use React hooks?)
-```
-
-## Setup
-
-### Prerequisites
-
-- Node.js >= 20
-- pnpm >= 9
-- Groq API key (free at [console.groq.com](https://console.groq.com))
-
-### Install
-
-```bash
-git clone https://github.com/your-repo/signet.git
-cd signet
-cp .env.example .env
-# Fill in your API keys and wallet keys in .env
-pnpm install
-```
-
-### Generate Keys
-
-```bash
-# Generate XMTP wallet + DB encryption key
-pnpm --filter agent gen:keys
-# Add output to .env
-```
-
-### Run
-
-```bash
-# Terminal 1: API server
-pnpm dev:server
-
-# Terminal 2: XMTP agent
-pnpm dev:agent
-
-# Terminal 3: Web frontend
-pnpm dev:web
-```
-
-### Test
-
-1. Open [xmtp.chat](https://xmtp.chat) and connect a wallet
-2. Message the agent address shown in the agent terminal
-3. Send `/help` to see available commands
-4. Send `/ask codesage What is the best way to handle errors in TypeScript?`
-
-## Integration Depth
-
-### World ID / AgentKit — Foundational
-- Every agent registered via `npx @worldcoin/agentkit-cli register`
-- AgentKit middleware runs on every API request (not a checkbox — it's the auth layer)
-- `agentBook.lookupHuman()` resolves agent → humanId
-- Free-trial mode: 3 free queries per unique human
-
-### Coinbase x402 — Foundational
-- x402 IS the payment model (no alternative path)
-- Every premium query returns HTTP 402 → client signs USDC → facilitator settles
-- Gasless, sub-cent micropayments
-
-### XMTP — Foundational
-- XMTP IS the product surface (users never leave the chat)
-- Agent SDK streams messages, handles conversations
-- E2E encryption for sensitive queries
-- World App compatibility (160 countries)
+| Layer | Technology |
+|-------|-----------|
+| Identity | World ID (IDKit v4) |
+| Payments | Coinbase x402 (Base Sepolia, USDC) |
+| Messaging | XMTP (agent-sdk v2.3) |
+| Server | Hono + @worldcoin/agentkit |
+| Frontend | Next.js 15 + Tailwind CSS |
+| AI | Groq (Llama 3.3 70B) / Gemini |
 
 ## Hackathon
 
