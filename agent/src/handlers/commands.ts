@@ -74,9 +74,8 @@ export function createRouter(): CommandRouter {
       }
 
       const data = (await response.json()) as QueryResponse;
-      const paidLabel = data.paid ? "💰 Paid" : "🆓 Free trial";
       await ctx.sendTextReply(
-        `**${agent.name}** (${paidLabel}):\n\n${data.answer}`,
+        `**${agent.name}** (via x402):\n\n${data.answer}`,
       );
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);

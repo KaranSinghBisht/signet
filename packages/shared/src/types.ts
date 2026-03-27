@@ -23,5 +23,4 @@ export interface QueryResponse {
   answer: string;
   agentId: string;
   model: string;
-  paid: boolean;
 }

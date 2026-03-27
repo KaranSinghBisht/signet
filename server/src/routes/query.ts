@@ -1,8 +1,9 @@
 import { Hono } from "hono";
 import { getAgent } from "../services/registry.js";
 import { queryAI } from "../services/ai.js";
-import type { QueryRequest, QueryResponse } from "@signet/shared";
+import type { QueryResponse } from "@signet/shared";
 
+const MAX_QUESTION_LENGTH = 2000;
 const query = new Hono();
 
 query.post("/query/:agentId", async (c) => {
@@ -13,21 +14,35 @@ query.post("/query/:agentId", async (c) => {
     return c.json({ error: `Agent '${agentId}' not found` }, 404);
   }
 
-  const body = await c.req.json<QueryRequest>();
+  let body: { question?: string };
+  try {
+    body = await c.req.json();
+  } catch {
+    return c.json({ error: "Invalid JSON body" }, 400);
+  }
+
   if (!body.question || typeof body.question !== "string") {
     return c.json({ error: "Missing 'question' in request body" }, 400);
   }
 
-  const { answer, model } = await queryAI(agent.systemPrompt, body.question);
+  if (body.question.length > MAX_QUESTION_LENGTH) {
+    return c.json({ error: `Question too long (max ${MAX_QUESTION_LENGTH} chars)` }, 400);
+  }
 
-  const response: QueryResponse = {
-    answer,
-    agentId: agent.id,
-    model,
-    paid: true,
-  };
+  try {
+    const { answer, model } = await queryAI(agent.systemPrompt, body.question);
 
-  return c.json(response);
+    const response: QueryResponse = {
+      answer,
+      agentId: agent.id,
+      model,
+    };
+
+    return c.json(response);
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : "Unknown error";
+    return c.json({ error: `AI service error: ${msg}` }, 503);
+  }
 });
 
 export { query };
