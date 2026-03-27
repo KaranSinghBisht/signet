@@ -1,4 +1,4 @@
-import type { AgentConfig } from "@signet/shared";
+import type { AgentListItem } from "@signet/shared";
 import { XMTP_CHAT_URL } from "@/lib/agents-data";
 
 const typeColors: Record<string, string> = {
@@ -13,7 +13,7 @@ const domainEmoji: Record<string, string> = {
   "Fitness & Nutrition": "><",
 };
 
-export function AgentCard({ agent }: { agent: AgentConfig }) {
+export function AgentCard({ agent }: { agent: AgentListItem }) {
   return (
     <div className="group rounded-xl border border-[var(--border)] p-6 hover:border-[var(--accent)] transition-colors">
       <div className="mb-4 flex items-start justify-between">
@@ -23,9 +23,7 @@ export function AgentCard({ agent }: { agent: AgentConfig }) {
         <span
           className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${typeColors[agent.type] || ""}`}
         >
-          {agent.type === "free-trial"
-            ? `${agent.freeTrialUses} free`
-            : agent.type}
+          {agent.type === "free-trial" ? "3 free queries" : agent.type}
         </span>
       </div>
       <h3 className="mb-1 text-lg font-semibold">{agent.name}</h3>
