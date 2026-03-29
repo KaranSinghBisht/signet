@@ -1,7 +1,7 @@
 import "dotenv/config";
 
 function env(key: string, fallback: string): string {
-  return process.env[key] || fallback;
+  return process.env[key] ?? fallback;
 }
 
 function required(key: string): string {
@@ -18,4 +18,5 @@ export const config = {
   facilitatorUrl: env("FACILITATOR_URL", "https://x402.org/facilitator"),
   paymentNetwork: env("PAYMENT_NETWORK", "eip155:84532"),
   agentWalletAddress: required("AGENT_WALLET_ADDRESS"),
+  deploySecret: env("DEPLOY_SECRET", ""),
 };

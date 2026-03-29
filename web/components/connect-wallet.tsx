@@ -9,13 +9,15 @@ interface ConnectWalletProps {
 export function ConnectWallet({ onConnected }: ConnectWalletProps) {
   const [connecting, setConnecting] = useState(false);
   const [address, setAddress] = useState<`0x${string}` | null>(null);
+  const [error, setError] = useState("");
 
   const connect = async () => {
     if (!window.ethereum) {
-      alert("Please install MetaMask or another wallet extension.");
+      setError("Please install MetaMask or another wallet extension.");
       return;
     }
     setConnecting(true);
+    setError("");
     try {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
@@ -23,7 +25,10 @@ export function ConnectWallet({ onConnected }: ConnectWalletProps) {
       const addr = accounts[0] as `0x${string}`;
       setAddress(addr);
       onConnected(addr);
-    } catch {
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to connect wallet";
+      setError(msg);
+    } finally {
       setConnecting(false);
     }
   };
@@ -38,12 +43,17 @@ export function ConnectWallet({ onConnected }: ConnectWalletProps) {
   }
 
   return (
-    <button
-      onClick={connect}
-      disabled={connecting}
-      className="rounded-full border border-[var(--border)] px-6 py-3 text-sm font-medium hover:border-[var(--border-light)] transition-colors"
-    >
-      {connecting ? "Connecting..." : "Connect Wallet"}
-    </button>
+    <div className="flex flex-col items-center gap-2">
+      <button
+        onClick={connect}
+        disabled={connecting}
+        className="rounded-full border border-[var(--border)] px-6 py-3 text-sm font-medium hover:border-[var(--border-light)] transition-colors"
+      >
+        {connecting ? "Connecting..." : "Connect Wallet"}
+      </button>
+      {error && (
+        <p className="text-xs text-red-500 max-w-xs text-center">{error}</p>
+      )}
+    </div>
   );
 }

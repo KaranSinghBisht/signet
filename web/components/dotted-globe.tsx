@@ -35,10 +35,14 @@ export function DottedGlobe() {
     }
 
     let rotation = 0;
+    let lastTime = performance.now();
+    const DEGREES_PER_MS = 0.007;
 
-    function draw() {
+    function draw(now: number) {
+      const dt = now - lastTime;
+      lastTime = now;
       ctx!.clearRect(0, 0, size, size);
-      rotation += 0.12;
+      rotation += DEGREES_PER_MS * dt;
 
       for (const dot of dots) {
         const latRad = (dot.lat * Math.PI) / 180;
@@ -65,7 +69,7 @@ export function DottedGlobe() {
       animRef.current = requestAnimationFrame(draw);
     }
 
-    draw();
+    draw(performance.now());
     return () => cancelAnimationFrame(animRef.current);
   }, []);
 

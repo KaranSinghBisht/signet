@@ -20,4 +20,11 @@ agent.on("unhandledError", (error) => {
   console.error("Unhandled error:", error);
 });
 
+// Sync conversations before streaming so the local DB is up-to-date
+try {
+  await agent.client.conversations.syncAll();
+} catch (err) {
+  console.warn("syncAll failed (non-fatal):", err);
+}
+
 await agent.start();

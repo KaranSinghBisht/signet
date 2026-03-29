@@ -10,6 +10,8 @@ export interface AgentConfig {
   type: AgentType;
   freeTrialUses: number;
   avatarUrl?: string;
+  voiceEnabled?: boolean;
+  twitterHandle?: string;
 }
 
 export type AgentListItem = Omit<AgentConfig, "systemPrompt" | "freeTrialUses">;

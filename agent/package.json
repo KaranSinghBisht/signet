@@ -11,9 +11,9 @@
   },
   "dependencies": {
     "@signet/shared": "workspace:*",
-    "@xmtp/agent-sdk": "latest",
-    "@x402/fetch": "latest",
-    "@x402/evm": "latest",
+    "@xmtp/agent-sdk": "^2.3.0",
+    "@x402/fetch": "^2.8.0",
+    "@x402/evm": "^2.8.0",
     "viem": "^2",
     "dotenv": "^16.4.0"
   },

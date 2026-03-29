@@ -12,9 +12,15 @@
     "@signet/shared": "workspace:*",
     "@worldcoin/idkit": "^4.0.11",
     "@xmtp/browser-sdk": "^7.0.0",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.38.0",
+    "lucide-react": "^1.7.0",
     "next": "^15",
+    "next-auth": "4",
     "react": "^19",
-    "react-dom": "^19"
+    "react-dom": "^19",
+    "tailwind-merge": "^3.5.0",
+    "viem": "^2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

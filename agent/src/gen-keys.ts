@@ -4,5 +4,5 @@ import { generatePrivateKey } from "viem/accounts";
 const walletKey = generatePrivateKey();
 const dbEncryptionKey = randomBytes(32).toString("hex");
 
-console.log(`XMTP_WALLET_KEY=${walletKey}`);
-console.log(`XMTP_DB_ENCRYPTION_KEY=${dbEncryptionKey}`);
+process.stdout.write(`XMTP_WALLET_KEY=${walletKey}\n`);
+process.stdout.write(`XMTP_DB_ENCRYPTION_KEY=${dbEncryptionKey}\n`);

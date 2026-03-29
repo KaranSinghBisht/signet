@@ -40,8 +40,8 @@ query.post("/query/:agentId", async (c) => {
 
     return c.json(response);
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : "Unknown error";
-    return c.json({ error: `AI service error: ${msg}` }, 503);
+    console.error("AI query error:", err);
+    return c.json({ error: "AI service temporarily unavailable" }, 503);
   }
 });
 

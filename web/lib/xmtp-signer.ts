@@ -6,9 +6,13 @@ import { createWalletClient, custom, toBytes } from "viem";
 import { mainnet } from "viem/chains";
 
 export function createEoaSigner(address: `0x${string}`): Signer {
+  if (!window.ethereum) {
+    throw new Error("No wallet provider found. Please install MetaMask or another wallet extension.");
+  }
+
   const walletClient = createWalletClient({
     chain: mainnet,
-    transport: custom(window.ethereum!),
+    transport: custom(window.ethereum),
   });
 
   return {

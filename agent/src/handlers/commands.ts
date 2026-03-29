@@ -1,8 +1,23 @@
 import { CommandRouter } from "@xmtp/agent-sdk";
 import { AGENTS } from "@signet/shared";
-import type { QueryResponse } from "@signet/shared";
+import type { AgentListItem, QueryResponse } from "@signet/shared";
 import { paymentFetch } from "../services/payment-client.js";
 import { config } from "../config.js";
+
+async function fetchLiveAgents(): Promise<AgentListItem[]> {
+  try {
+    const res = await fetch(`${config.serverUrl}/agents`);
+    if (!res.ok) throw new Error(`Server returned ${res.status}`);
+    const data = (await res.json()) as { agents: AgentListItem[] };
+    return data.agents ?? [];
+  } catch (err: unknown) {
+    console.warn(
+      "Failed to fetch live agents, falling back to static list:",
+      err instanceof Error ? err.message : err,
+    );
+    return AGENTS.map(({ systemPrompt: _s, freeTrialUses: _f, ...rest }) => rest);
+  }
+}
 
 export function createRouter(): CommandRouter {
   const router = new CommandRouter({ helpCommand: "/help" });
@@ -26,8 +41,10 @@ export function createRouter(): CommandRouter {
   });
 
   router.command("/list", "List available agents", async (ctx) => {
-    const lines = AGENTS.map(
-      (a) => `**${a.name}** (${a.id}) — ${a.domain}\n  ${a.description}\n  Price: ${a.priceUsd}/query | ${a.freeTrialUses} free queries`,
+    const agents = await fetchLiveAgents();
+    const lines = agents.map(
+      (a) =>
+        `**${a.name}** (${a.id}) — ${a.domain}\n  ${a.description}\n  Price: ${a.priceUsd}/query`,
     );
     const text = ["**Available Agents:**", "", ...lines].join("\n");
     await ctx.sendTextReply(text);
@@ -46,12 +63,11 @@ export function createRouter(): CommandRouter {
       return;
     }
 
-    const agent = AGENTS.find((a) => a.id === agentId);
+    const agents = await fetchLiveAgents();
+    const agent = agents.find((a) => a.id === agentId);
     if (!agent) {
-      const ids = AGENTS.map((a) => a.id).join(", ");
-      await ctx.sendTextReply(
-        `Agent "${agentId}" not found. Available: ${ids}`,
-      );
+      const ids = agents.map((a) => a.id).join(", ");
+      await ctx.sendTextReply(`Agent "${agentId}" not found. Available: ${ids}`);
       return;
     }
 
@@ -68,18 +84,17 @@ export function createRouter(): CommandRouter {
       );
 
       if (!response.ok) {
-        const err = await response.text();
-        await ctx.sendTextReply(`Error from ${agent.name}: ${err}`);
+        const errBody = await response.text();
+        console.error(`Query error for agent ${agent.id} (HTTP ${response.status}):`, errBody);
+        await ctx.sendTextReply(`${agent.name} is temporarily unavailable. Please try again.`);
         return;
       }
 
       const data = (await response.json()) as QueryResponse;
-      await ctx.sendTextReply(
-        `**${agent.name}** (via x402):\n\n${data.answer}`,
-      );
+      await ctx.sendTextReply(`**${agent.name}** (via x402):\n\n${data.answer}`);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : String(err);
-      await ctx.sendTextReply(`Failed to query ${agent.name}: ${msg}`);
+      console.error(`Agent query error (${agent.id}):`, err);
+      await ctx.sendTextReply(`Failed to query ${agent.name}. Please try again.`);
     }
   });
 

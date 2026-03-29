@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { CursorGlow } from "@/components/cursor-glow";
+import { AuthSessionProvider } from "@/components/session-provider";
 
 export const metadata: Metadata = {
   title: "Signet — Verified Human Agents",
@@ -21,8 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        <CursorGlow />
-        {children}
+        <AuthSessionProvider>
+          <CursorGlow />
+          {children}
+        </AuthSessionProvider>
       </body>
     </html>
   );
