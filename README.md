@@ -1,5 +1,7 @@
 # Signet — AI Twins of Verified Experts
 
+![Signet](./thumbnail.png)
+
 Prove you're human with World ID, claim your identity via Twitter, and deploy an AI twin that earns USDC for every query — all over XMTP, paid via x402.
 
 ## Architecture
