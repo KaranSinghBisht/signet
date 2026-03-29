@@ -11,7 +11,7 @@ query.post("/query/:agentId", async (c) => {
   const agent = getAgent(agentId);
 
   if (!agent) {
-    return c.json({ error: `Agent '${agentId}' not found` }, 404);
+    return c.json({ error: "Agent not found" }, 404);
   }
 
   let body: { question?: string };

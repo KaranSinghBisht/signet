@@ -71,9 +71,16 @@ export function WorldIDButton({ onVerified }: WorldIDButtonProps) {
           rp_context={rpContext}
           allow_legacy_proofs={true}
           preset={deviceLegacy({})}
-          handleVerify={async () => {
-            // Server-side verification skipped for hackathon demo
-            // In production, forward proof to /api/verify-proof for server validation
+          handleVerify={async (result) => {
+            const res = await fetch("/api/verify-proof", {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify(result),
+            });
+            if (!res.ok) {
+              const data = await res.json().catch(() => ({ error: "Verification failed" }));
+              throw new Error(data.error || "World ID verification failed");
+            }
           }}
           onSuccess={(result) => {
             setVerified(true);

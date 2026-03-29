@@ -67,13 +67,18 @@ Each `/ask` query triggers a real x402 payment:
 /ask <agent> <q>    — Query an agent
 ```
 
+Example: `/ask karpathy How do transformers work?`
+
 ## Agents
 
 | Agent | Domain | Price/Query |
 |-------|--------|-------------|
-| CodeSage | Software Engineering | $0.001 |
-| LegalEagle | Legal Advisory | $0.001 |
-| FitCoach | Fitness & Nutrition | $0.001 |
+| Andrej Karpathy (`karpathy`) | Data Science | $0.001 |
+| Naval Ravikant (`naval`) | Finance & Investing | $0.001 |
+| Paul Graham (`paulg`) | Marketing & Growth | $0.001 |
+| Andrew Huberman (`huberman`) | Fitness & Nutrition | $0.001 |
+| Patrick McKenzie (`patio11`) | Software Engineering | $0.001 |
+| Preston Pysh (`prestonpysh`) | Finance & Investing | $0.001 |
 
 ## Setup
 

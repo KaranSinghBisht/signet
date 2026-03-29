@@ -68,7 +68,7 @@ export async function POST(request: Request): Promise<Response> {
   if (!response.ok) {
     console.error("[verify-proof] World ID error:", response.status, responseText);
     return NextResponse.json(
-      { error: "Verification failed", detail: responseText },
+      { error: "Verification failed" },
       { status: 400 },
     );
   }

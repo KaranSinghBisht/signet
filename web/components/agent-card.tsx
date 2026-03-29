@@ -41,7 +41,7 @@ export function AgentCard({ agent, onSelect, isNew = false }: { agent: AgentList
           )}
           <div className="flex flex-col items-end">
             <span className="text-[10px] font-bold text-[var(--accent)] uppercase tracking-widest">
-              ${agent.priceUsd} / Query
+              {agent.priceUsd} / Query
             </span>
             <span className="text-[9px] text-[var(--text-dim)] font-mono uppercase tracking-tighter">
               Settled on Base

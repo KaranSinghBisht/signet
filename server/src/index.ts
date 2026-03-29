@@ -27,6 +27,15 @@ const app = new Hono();
 // --- Rate limiting ---
 function createRateLimiter(limit: number, windowMs: number) {
   const store = new Map<string, { count: number; windowStart: number }>();
+
+  // Periodically evict stale entries to prevent memory leaks
+  setInterval(() => {
+    const now = Date.now();
+    for (const [key, entry] of store) {
+      if (now - entry.windowStart > windowMs) store.delete(key);
+    }
+  }, windowMs).unref();
+
   return async (c: Context, next: Next) => {
     const ip =
       c.req.header("x-forwarded-for")?.split(",")[0]?.trim() ??
