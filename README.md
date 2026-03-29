@@ -107,6 +107,3 @@ pnpm dev:web           # Terminal 3: Web frontend (port 3000)
 | AI | Groq (Llama 3.3 70B) / Gemini |
 | Voice | Murf.ai TTS (optional per agent) |
 
-## Hackathon
-
-AgentKit Hackathon — World x Coinbase x XMTP (March 2026)
