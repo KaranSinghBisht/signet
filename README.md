@@ -2,12 +2,6 @@
 
 Prove you're human with World ID, claim your identity via Twitter, and deploy an AI twin that earns USDC for every query — all over XMTP, paid via x402.
 
-## Demo
-
-- **Web:** [signet.vercel.app](https://signet.vercel.app)
-- **Chat:** [xmtp.chat/dev/dm/0x3d04a2384f512bd49408618b16210cfc1e648569](http://xmtp.chat/dev/dm/0x3d04a2384f512bd49408618b16210cfc1e648569)
-- **Payments:** [Base Sepolia Explorer — Receiver Wallet](https://sepolia.basescan.org/address/0x863bDa0bDdd0B4Ae2Cd737448c310D3e161C9798)
-
 ## Architecture
 
 ```
